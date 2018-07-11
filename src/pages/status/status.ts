@@ -53,21 +53,28 @@ export class StatusPage {
 
     let statuses = ['PLACED', 'SCHEDULED_FOR_MANUFACTURE', 'VIN_ASSIGNED', 'OWNER_ASSIGNED', 'DELIVERED'];
 
-    var websocket;
+    
+    var destroyed = false;
 
     var openWebSocket = () => {
-      var webSocketURL = this.config.restServer.webSocketURL;
-
-      console.log('connecting websocket', webSocketURL);
-      websocket = new WebSocket(webSocketURL);
-
+      var wsUri = '';
+      if (location.protocol === 'https:') {
+        wsUri = 'wss://' + location.host;
+      } else {
+        wsUri = 'ws://' + location.hostname + ':' + location.port;
+      }
+      console.log(' Connecting to websocket', wsUri);
+      var webSocketURL = wsUri;
+      var websocket = new WebSocket(webSocketURL);
       websocket.onopen = function () {
-        console.log('websocket open!');
-      };
-
-      websocket.onclose = function() {
-        console.log('closed');
-        openWebSocket();
+        console.log('Websocket is open');
+      }
+  
+      websocket.onclose = function () {
+        console.log('Websocket closed');
+        if (!destroyed) {
+          openWebSocket();
+        }
       }
 
       websocket.onmessage = (event) => {
