@@ -68,8 +68,6 @@ typings/
 # dotenv environment variables file
 .env
 
-www/
-
 # Phone app generated
 plugins
 platforms
