@@ -147,7 +147,8 @@ export class BuilderPage {
         console.log("RESPONSE TEXT", this.responseText);
       }
     });
-    xhr.open("POST", "/placeOrder");
+    //xhr.open("POST", "/placeOrder");
+    xhr.open("POST", this.config["restServer"].httpURL + "/PlaceOrder");
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", this.config["restServer"].authToken);
     xhr.send(data);
